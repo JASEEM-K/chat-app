@@ -2,6 +2,8 @@ import { Eye, EyeClosed, KeyRound, LoaderIcon, Mail, MessageSquare, User } from 
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { AuthImagePattern } from "../components/AuthImagePattern"
+import toast from "react-hot-toast"
+import { useAuthStore } from "../store/useAuthStore"
 
 const SignUpPage = () => {
     const [showPassword ,setShowPassword ] = useState(false)
@@ -10,6 +12,25 @@ const SignUpPage = () => {
         email: "",
         password: "",
     })
+
+    const { signUp, isSigninngUp } = useAuthStore()
+
+    const validateForm = () => {
+        if(!formData.fullName.trim()) return toast.error("Full Name is required")
+        if(!formData.email.trim()) return toast.error("Email is required")
+        if(!formData.password.trim()) return toast.error("Password is required")
+        if(!/\S+@\S+\.\S+/.test(formData.email)) return toast.error("Invalid email Format")
+
+        return true
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const isValid = validateForm()
+        if(isValid) signUp(formData)
+    }
+
+
   return (
         <div className="h-screen grid lg:grid-cols-2">
             {/* left side - Form  */}
@@ -27,7 +48,7 @@ const SignUpPage = () => {
                     </div>
 
                     {/* Form */}
-                    <form onSubmit={e => e.preventDefault()} className="space-y-6">
+                    <form onSubmit={(e) => handleSubmit(e)} className="space-y-6">
                         <div className="form-control">
                             <label className="label">
                                 <span className=" label-text font-medium">Full Name</span>
@@ -94,8 +115,10 @@ const SignUpPage = () => {
                             className="btn btn-primary w-full"
                             onClick={""}
                         >
+                            { isSigninngUp?
+                            <>
                             <LoaderIcon className="h-5 w-5 animate-spin" />
-                            Loading...
+                            Loading...  </>: "Create Account" }
                         </button>
                     </form>
 
@@ -103,7 +126,7 @@ const SignUpPage = () => {
                         <p className=" text-base-content/60">
                             Already have an account?{" "}
                             <Link to='/login' className="link link-primary">
-                                Sign Up
+                                Sign In
                             </Link>
                         </p>
                     </div>

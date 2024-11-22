@@ -3,6 +3,8 @@ import { useState } from "react"
 import { Link } from 'react-router-dom'
 
 import { AuthImagePattern } from '../components/AuthImagePattern'
+import { useAuthStore } from "../store/useAuthStore"
+import toast from "react-hot-toast"
 
 const LoginPage = () => {
     const [ showPassword ,setShowPassword ] = useState(false)
@@ -11,16 +13,21 @@ const LoginPage = () => {
         password: "",
     })
 
-    //const haddleChange = (e) => {
-        //setFormData({ ...formData, [e.target.name]: e.target.value })
-    //}
+    const { login, isLogining } = useAuthStore()
 
-    //const haddleSubmit = (e) => {
-        //e.preventDefault()
-    //}
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const isValid = haddleFormValidation()
+        if(isValid === true) login(formData)
+    }
 
-    //const haddleFormValidation = () => {
-    //}
+    const haddleFormValidation = () => {
+        if(!formData.email.trim()) return toast.error("Email is required")
+        if(!formData.password.trim()) return toast.error("Password is required")
+        if(!/\S+@\S+\.\S+/.test(formData.email)) return toast.error("Invalid email Format")
+
+        return true
+    }
 
     return (
         <div className="h-screen grid lg:grid-cols-2">
@@ -39,7 +46,7 @@ const LoginPage = () => {
                     </div>
 
                     {/* Form */}
-                    <form onSubmit={e => e.preventDefault()} className="space-y-6">
+                    <form onSubmit={(e) => handleSubmit(e)} className="space-y-6">
                         <div className="form-control">
                             <label className="label">
                                 <span className=" label-text font-medium">Email</span>
@@ -91,8 +98,10 @@ const LoginPage = () => {
                             className="btn btn-primary w-full"
                             onClick={""}
                         >
+                            { isLogining ? 
+                            <>
                             <LoaderIcon className="h-5 w-5 animate-spin" />
-                            Loading...
+                            Loading... </> : "Sign In"}
                         </button>
                     </form>
 

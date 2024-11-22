@@ -5,7 +5,7 @@ import User from "../Models/userModel.js"
 
 export const getUserSideBar = async (req, res) => {
     try {
-        const users = await User.find({_id: {$ne: req.user._id}}).select("username profilePic fullName _id")
+        const users = await User.find({_id: {$ne: req.user._id}}).select("email profilePic fullName _id")
 
         res.status(200).json({users})
     } catch (error) {

@@ -7,7 +7,6 @@ import cookieParser from 'cookie-parser'
 import { connectDB } from './lib/connectDB.js'
 import authRoute from './Routes/authRoutes.js'
 import messageRoute from './Routes/messageRoute.js'
-import jwt from 'jsonwebtoken'
 
 dotenv.config()
 
@@ -16,14 +15,14 @@ const server = http.createServer(app)
 const socket = new Server(server)
 
 const PORT = process.env.PORT || 5000
+const corsConfig = {
+    origin: "http://localhost:5173",
+    credentials: true,
+}
 
 app.use(cookieParser())
 app.use(express.json())
-app.use(cors())
-app.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-}))
+app.use(cors(corsConfig))
 
 app.use('/api/auth',authRoute)
 app.use('/api/message',messageRoute)

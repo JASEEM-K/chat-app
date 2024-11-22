@@ -4,8 +4,8 @@ import bcrypt from 'bcryptjs'
 
 export const signUp = async (req,res) => {
     try {
-        const {username , email , password , fullName } = req.body
-        if(!username || !email || !password || !fullName){
+        const {email , password , fullName } = req.body
+        if(!email || !password || !fullName){
             return res.status(400).json({error:"All fields are required"})
         }
 
@@ -14,20 +14,19 @@ export const signUp = async (req,res) => {
             return res.status(400).json({error:"Invalid email"})
         }
 
-        const usernameRegex = /^[a-zA-Z0-9](?:[a-zA-Z0-9_]{1,14}[a-zA-Z0-9])?$/g
-        if(!usernameRegex.test(username)){
-            return res.status(400).json({error:"Invalid Username format"})
+        const emailAlreadyExists = await User.findOne({email})
+        if(emailAlreadyExists){
+            return res.status(400).json({error:"Email already exists"})
         }
 
         if(password.length < 6){
             return res.status(400).json({error: "Password must be at least 6 characters"})
         }
 
-        const satl = await bcrypt.getSalt(10)
-        const hashPass = await bcrypt.hash(password,satl)
+        const salt = bcrypt.genSaltSync(10)
+        const hashPass = await bcrypt.hash(password,salt)
 
         const newUser = new User({
-            username,
             email,
             password: hashPass,
             fullName,
@@ -49,8 +48,8 @@ export const signUp = async (req,res) => {
 
 export const login = async (req,res) => {
     try {
-        const { username , password } = req.body
-        const user = await User.findOne({username})
+        const { email , password } = req.body
+        const user = await User.findOne({email})
         if(!user){
             return res.status(404).json({error:"User not found"})
         }
@@ -58,7 +57,8 @@ export const login = async (req,res) => {
         if(!isMatch){
             return res.status(400).json({error:"Invalid credentials"})
         }
-        generateToken
+        generateToken(user._id, res)
+        user.password = undefined
         return res.status(200).json({user})
     } catch (error) {
         console.error("Error in Logging User :", error)

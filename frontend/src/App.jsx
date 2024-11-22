@@ -1,9 +1,12 @@
-import { useAuthStore } from "./store/useAuthStore"
 import { useEffect } from "react"
 import { Loader } from 'lucide-react'
 import { Routes , Route } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
+
 import SignUpPage from "./Pages/SignUpPage"
 import LoginPage from "./Pages/LoginPage"
+import { useAuthStore } from "./store/useAuthStore"
+
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore()
@@ -29,6 +32,7 @@ const App = () => {
         <Route path="/login" element={!authUser? <LoginPage /> : <h1>Home</h1>} />
         <Route path="/signup" element={!authUser? <SignUpPage /> : <h1>Home</h1>} />
       </Routes>
+      <Toaster />
     </div>
   )
 }
