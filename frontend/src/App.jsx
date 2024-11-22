@@ -7,6 +7,7 @@ import SignUpPage from "./Pages/SignUpPage"
 import LoginPage from "./Pages/LoginPage"
 import { useAuthStore } from "./store/useAuthStore"
 import Navbar from "./components/Navbar"
+import ProfilePage from "./Pages/ProfilePage"
 
 
 const App = () => {
@@ -33,6 +34,7 @@ const App = () => {
         <Route path="/" element={authUser? <h1>Home</h1>: <SignUpPage />} />
         <Route path="/login" element={!authUser? <LoginPage /> : <h1>Home</h1>} />
         <Route path="/signup" element={!authUser? <SignUpPage /> : <h1>Home</h1>} />
+        <Route path="/profile" element={authUser? <ProfilePage /> : <SignUpPage />} />
       </Routes>
       <Toaster />
     </div>
