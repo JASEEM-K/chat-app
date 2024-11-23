@@ -9,7 +9,7 @@ export const signUp = async (req,res) => {
             return res.status(400).json({error:"All fields are required"})
         }
 
-        const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
+        const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
         if(!emailRegex.test(email)){
             return res.status(400).json({error:"Invalid email"})
         }

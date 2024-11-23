@@ -25,13 +25,16 @@ export const useChatStore = create((set) => ({
         }
     },
 
-    selectUser: (user) => set({selectedUser:user}),
+    setSelectedUser: (user) => set({selectedUser:user}),
 
 
     getUsers: async () => {
         set({isUsersLoading: true})
         try {
             const res = await axiosInstance.get('/message/getSideBar')
+
+            console.log("GetUsers Clg")
+            console.log(res.data.users)
             set({users: res.data})
         } catch (error) {
             console.log("Error in getting chats", error.response.data.error)
