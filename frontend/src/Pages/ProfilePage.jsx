@@ -16,7 +16,6 @@ const ProfilePage = () => {
         reader.onload = async () => {
             const dataUrl = reader.result // This will be an base 64 string
             setSelectedImage(dataUrl)
-            console.log(dataUrl)
             await updateProfile({ profilePic: dataUrl })
         }
 
