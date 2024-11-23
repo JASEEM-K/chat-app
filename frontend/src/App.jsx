@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar"
 import ProfilePage from "./Pages/ProfilePage"
 import { useThemeStore } from "./store/useThemeStore"
 import SettingsPage from "./Pages/SettingsPage"
+import HomePage from "./Pages/HomePage"
 
 
 const App = () => {
@@ -37,9 +38,9 @@ const App = () => {
       
 
       <Routes>
-        <Route path="/" element={authUser? <h1>Home</h1>: <SignUpPage />} />
-        <Route path="/login" element={!authUser? <LoginPage /> : <h1>Home</h1>} />
-        <Route path="/signup" element={!authUser? <SignUpPage /> : <h1>Home</h1>} />
+        <Route path="/" element={authUser? <HomePage />: <SignUpPage />} />
+        <Route path="/login" element={!authUser? <LoginPage /> : <HomePage />} />
+        <Route path="/signup" element={!authUser? <SignUpPage /> : <HomePage />} />
         <Route path="/profile" element={authUser? <ProfilePage /> : <SignUpPage />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Routes>
