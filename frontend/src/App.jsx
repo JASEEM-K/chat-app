@@ -30,6 +30,8 @@ const App = () => {
   return (
     <div>
       <Navbar />
+      
+
       <Routes>
         <Route path="/" element={authUser? <h1>Home</h1>: <SignUpPage />} />
         <Route path="/login" element={!authUser? <LoginPage /> : <h1>Home</h1>} />
