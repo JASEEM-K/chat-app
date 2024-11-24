@@ -36,7 +36,7 @@ export const sendMessage = async (req, res) => {
         const { text ,image } = req.body
         const receiverId = req.params.id
         let imgUrl
-        if((!text && !image) || (text && image)){
+        if(!text && !image){
             return res.status(400).json({error: "Please provide text or profile pic"})
         }
 
@@ -54,6 +54,7 @@ export const sendMessage = async (req, res) => {
         await newMessage.save()
         res.status(200).json(newMessage)
     } catch (error) {
-        
+        console.log("Error in Sending messages", error)
+        return res.status(500).json({error: "Something went wrong"})
     }
 } 

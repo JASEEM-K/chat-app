@@ -3,7 +3,7 @@ import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 
 
-export const useChatStore = create((set) => ({
+export const useChatStore = create((set,get) => ({
     chats: [],
     users: [],
     selectedUser: null,
@@ -33,25 +33,24 @@ export const useChatStore = create((set) => ({
         try {
             const res = await axiosInstance.get('/message/getSideBar')
 
-            console.log("GetUsers Clg")
-            console.log(res.data.users)
             set({users: res.data})
         } catch (error) {
-            console.log("Error in getting chats", error.response.data.error)
+            console.log("Error in getting Sidebar USers", error.response.data.error)
             toast.error("Something went wrong")
         } finally {
           set({ isUsersLoading: false })
         }
     },
 
-    sendMessage: async (id) => {
+    sendMessage: async (messageData) => {
         set({isSendingMessage: true})
+        const { chats , selectedUser } = get()
         try {
-            const res = await axiosInstance.get(`/message/send/${id}`)
+            const res = await axiosInstance.post(`/message/send/${selectedUser._id}`,messageData)
 
-            set({chats: res.data})
+            set({chats: [...chats,res.data]})
         } catch (error) {
-            console.log("Error in getting chats", error)
+            console.log("Error in Sending Messages", error)
             toast.error("Something went wrong")
         } finally {
           set({ isGettingChats: false })

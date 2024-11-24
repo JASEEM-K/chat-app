@@ -9,16 +9,13 @@ const ProfilePage = () => {
     const handleImageUpload = (e) => {
         const image = e.target.files[0]
         if(!image) return;
-
         const reader = new FileReader()
         reader.readAsDataURL(image)
-
         reader.onload = async () => {
             const dataUrl = reader.result // This will be an base 64 string
             setSelectedImage(dataUrl)
             await updateProfile({ profilePic: dataUrl })
         }
-
     }
 
   return (

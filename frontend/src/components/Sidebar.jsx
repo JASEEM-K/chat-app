@@ -6,7 +6,7 @@ import SidebarSkeleton from './Skeleton/SidebarSkeleton'
 
 
 const Sidebar = () => {
-  const { isUsersLoading,selectedUser, setSelectUser,getUsers,users, } = useChatStore()
+  const { isUsersLoading,selectedUser, setSelectedUser,getUsers,users, } = useChatStore()
   const [ showOnlineUsers, setShowOnlineUsers ] = useState(false)
 
   const { OnlineUsers } = useAuthStore()
@@ -17,7 +17,7 @@ const Sidebar = () => {
   
   /**@type {Array} */
   const filterdUsers = showOnlineUsers?
-  users.filter((user) => OnlineUsers.includes(user._id))
+  users.users?.filter((user) => OnlineUsers.includes(user._id))
   : users
 
 
@@ -49,7 +49,10 @@ const Sidebar = () => {
         {filterdUsers.users?.map((user) => (
           <button
           key={user._id}
-            onClick={() => setSelectUser(user)}
+            onClick={() => (
+              console.log(selectedUser),
+              setSelectedUser(user)
+            )}
             className={`
               w-full p-3 flex items-center gap-3
               hover:bg-base-300 transition-colors
