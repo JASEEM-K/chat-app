@@ -50,7 +50,6 @@ const Sidebar = () => {
           <button
           key={user._id}
             onClick={() => (
-              console.log(selectedUser),
               setSelectedUser(user)
             )}
             className={`
