@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
+import { useAuthStore } from "./useAuthStore";
 
 
 export const useChatStore = create((set,get) => ({
@@ -49,6 +50,7 @@ export const useChatStore = create((set,get) => ({
             const res = await axiosInstance.post(`/message/send/${selectedUser._id}`,messageData)
 
             set({chats: [...chats,res.data]})
+
         } catch (error) {
             console.log("Error in Sending Messages", error)
             toast.error("Something went wrong")
@@ -57,6 +59,19 @@ export const useChatStore = create((set,get) => ({
         }
     },
 
+    connectSocketChats: () => {
+        const { selectedUser } = get()
+        if(!selectedUser) return
 
+        const socket  = useAuthStore.getState().socket
+        socket.on("Message",(message) => {
+            set({chats: [...get().chats,message]})
+        })
+    },
+
+    disconnectChat: () => {
+        const socket = useAuthStore.getState().socket
+        socket.off("Message")
+    },
 
 }))

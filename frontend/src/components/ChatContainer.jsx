@@ -11,6 +11,8 @@ const ChatContainer = () => {
     chats,
     getChats,
     selectedUser,
+    connectSocketChats,
+    disconnectChat,
     isGettingChats,
     } = useChatStore()
 
@@ -18,9 +20,13 @@ const ChatContainer = () => {
     const messageEndRef = useRef(null)
 
     useEffect(() => {
-        getChats(selectedUser._id)
+        getChats(selectedUser._id);
 
-    },[selectedUser._id,getChats])
+        connectSocketChats();
+
+        return () => disconnectChat();
+        
+    },[selectedUser._id,getChats,connectSocketChats,disconnectChat])
 
     useEffect(() => {
         if(messageEndRef.current && chats) {
