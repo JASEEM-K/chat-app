@@ -15,11 +15,11 @@ const Sidebar = () => {
     getUsers()
   },[getUsers])
   
-  /**@type {Array} */
   const filterdUsers = showOnlineUsers?
   users.users?.filter((user) => OnlineUsers.includes(user._id))
-  : users
+  : users.users
 
+  console.log(filterdUsers)
 
   if(isUsersLoading) return <SidebarSkeleton />
 
@@ -41,12 +41,12 @@ const Sidebar = () => {
             />
             <span className="text-sm">Show online only</span>
           </label>
-          <span className="text-xs text-zinc-500">[ {OnlineUsers.length === 1 ? 0 : OnlineUsers.length-1} Online ]</span>
+          <span className="text-xs text-zinc-500">[ {OnlineUsers.length-1} Online ]</span>
         </div>
       </div>
 
       <div className="overflow-y-auto w-full py-3">
-        {filterdUsers.users?.map((user) => (
+        {filterdUsers?.map((user) => (
           <button
           key={user._id}
             onClick={() => (

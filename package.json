@@ -1,0 +1,13 @@
+{
+  "name": "chat-app-mern",
+  "version": "1.0.0",
+  "description": "Realtime Chat App ",
+  "main": "index.js",
+  "scripts": {
+    "build" : "node install --prefix frontend && node install --prefix backend && node run build --prefix frontend",
+    "start" : "node run start --prefix backend"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
